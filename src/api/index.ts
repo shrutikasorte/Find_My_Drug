@@ -3,9 +3,10 @@ import api from "./apiServices";
 const loginApi = (payload: Object) => api.post(`/signin`, payload);
 const signupApi = (payload: Object) => api.post(`/signup`, payload);
 const fetchUser = () => api.get('/fetchuser');
-const addDrugApi = (payload:Object)=> api.post(`additem`,payload);
+const addDrugApi = (payload: Object) => api.post(`additem`, payload);
 const fetchItems = () => api.get(`/getmydrugs`);
-const updatePharmacyItem = (payload:Object) => api.put(`/updateitem`,payload);
+const updatePharmacyItem = (payload: Object) => api.put(`/updateitem`, payload);
+const fetchProducts = (payload: Object) => api.post(`/getProducts`, payload);
 
 const Apis = {
      loginApi,
@@ -13,6 +14,7 @@ const Apis = {
      fetchUser,
      addDrugApi,
      fetchItems,
-     updatePharmacyItem
+     updatePharmacyItem,
+     fetchProducts
 }
 export default Apis;

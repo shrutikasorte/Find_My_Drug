@@ -8,6 +8,7 @@ import { useAppDispatch } from "../../../redux/store";
 import { showMessage } from "../../../redux/slices/messageSlice/messageSlice";
 import { handleError } from "../../../utils";
 import { fetchPharmacyItems } from "../../../redux/slices/pharmacySlice/pharmacySlice";
+import CInput2 from "../../../common/customInput2";
 
 const AddItemModal = () => {
      const [open, setOpen] = useState<boolean>(false);
@@ -67,11 +68,11 @@ const AddItemModal = () => {
                               <div className="mt-5">
                                    <div className="flex items-center">
                                         <div className="font-Roboto font-[700] w-[100px]">Drug Name : </div>
-                                        <CInput
+                                        <CInput2
                                              value={newItem.name}
                                              placeholder="Enter Drug Name"
                                              width="100%"
-                                             className="outline-none border-[2px] text-[black]"
+                                             className="outline-none border-[2px] text-black"
                                              onChange={(e: any) => {
                                                   setNewItem({
                                                        ...newItem,
@@ -84,13 +85,13 @@ const AddItemModal = () => {
 
                                    <div className="flex justify-start items-center my-5">
                                         <div className="font-Roboto font-[700] w-[80px] ">Quantity : </div>
-                                        <CInput
+                                        <CInput2
                                              value={newItem.quantity}
                                              placeholder="Enter Quantity"
                                              width="200px"
                                              type="number"
                                              min={1}
-                                             className="outline-none border-[2px] text-[black]"
+                                             className="outline-none border-[2px] text-black"
                                              onChange={(e: any) => {
                                                   setNewItem({
                                                        ...newItem,

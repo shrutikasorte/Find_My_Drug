@@ -5,6 +5,7 @@ import CButton from "../../common/customButton";
 import { useAppDispatch } from "../../redux/store";
 import Apis from "../../api";
 import { showMessage } from "../../redux/slices/messageSlice/messageSlice";
+import { calc } from "antd/es/theme/internal";
 
 type Props = {
      setAuthType: any;
@@ -17,7 +18,6 @@ const SignUp: React.FC<Props> = ({ setAuthType }) => {
           password: '',
           confirmPassword: '',
           mobileNo: '',
-          role: '',
           country: '',
           state: '',
           city: '',
@@ -37,16 +37,15 @@ const SignUp: React.FC<Props> = ({ setAuthType }) => {
           if (
                !signupData?.name || signupData?.name?.trim() === "" ||
                !signupData?.email || signupData?.email?.trim() === "" ||
-               !signupData?.mobileNo || !matchPassword() || !signupData?.role ||
+               !signupData?.mobileNo || !matchPassword() ||
                !signupData?.password || signupData?.password?.trim() === "" ||
-               (signupData?.role === 'PHARMACY' && (
-                    !signupData?.pharmacyName || signupData?.pharmacyName?.trim() === "" ||
-                    !signupData?.country || signupData?.country?.trim() === "" ||
-                    !signupData?.state || signupData?.state?.trim() === "" ||
-                    !signupData?.city || signupData?.city?.trim() === "" ||
-                    !signupData?.addressLine1 || signupData?.addressLine1?.trim() === "" ||
-                    !signupData?.pincode
-               ))
+               !signupData?.pharmacyName || signupData?.pharmacyName?.trim() === "" ||
+               !signupData?.country || signupData?.country?.trim() === "" ||
+               !signupData?.state || signupData?.state?.trim() === "" ||
+               !signupData?.city || signupData?.city?.trim() === "" ||
+               !signupData?.addressLine1 || signupData?.addressLine1?.trim() === "" ||
+               !signupData?.pincode
+
           ) {
                return;
           }
@@ -58,7 +57,6 @@ const SignUp: React.FC<Props> = ({ setAuthType }) => {
                email: signupData?.email,
                password: signupData?.password,
                mobileNo: signupData?.mobileNo,
-               role: signupData?.role,
                country: signupData?.country,
                state: signupData?.state,
                city: signupData?.city,
@@ -82,38 +80,10 @@ const SignUp: React.FC<Props> = ({ setAuthType }) => {
      }
 
      return (
-          <div className="bg-transparent flex flex-col items-center justify-center">
+          <div className="bg-transparent flex flex-col items-center justify-center pb-10 overflow-y-auto">
                {/* <div className="mt-7">
                     <img width={100} src={Images.logo} alt="" />
                </div> */}
-               <div className="mt-8 flex gap-5  px-7">
-                    <div className="flex gap-2 items-center text-white font-Ultra text-[14px]">
-                         <input
-                              className="custom-radio"
-                              type="radio"
-                              id="role"
-                              name="role"
-                              value="CUSTOMER"
-                              defaultChecked={signupData?.role === 'CUSTOMER' ? true : false}
-                              onClick={() => setSignupData({ ...signupData, role: 'CUSTOMER' })}
-                         />
-                         <div>Customer</div>
-                    </div>
-                    <div className="flex gap-2 items-center text-white font-Ultra text-[14px]">
-                         <input
-                              className="custom-radio"
-                              type="radio"
-                              id="role"
-                              name="role"
-                              value="PHARMACY"
-                              defaultChecked={signupData?.role === 'PHARMACY' ? true : false}
-                              onClick={() => setSignupData({ ...signupData, role: 'PHARMACY' })}
-                         />
-                         <div>Pharmacy</div>
-                    </div>
-               </div>
-               {signupData?.validate && !signupData?.role && (<span className="err-msg">Select either of the options.</span>)}
-
                <div className="mt-5 w-[100%] lg:max-w-[600px]">
                     <CInput
                          title="Name"
@@ -129,26 +99,24 @@ const SignUp: React.FC<Props> = ({ setAuthType }) => {
                </div>
                {signupData?.validate && !signupData?.name && (<span className="err-msg">Please enter name.</span>)}
 
-               {
-                    signupData?.role === 'PHARMACY' && (
-                         <>
-                              <div className="mt-5 w-[100%] lg:max-w-[600px]">
-                                   <CInput
-                                        title="Pharmacy Name"
-                                        value={signupData.pharmacyName}
-                                        placeholder="Enter your Pharmacy Name"
-                                        onChange={(e: any) => {
-                                             setSignupData({
-                                                  ...signupData,
-                                                  pharmacyName: e.target.value
-                                             })
-                                        }}
-                                   />
-                              </div>
-                              {signupData?.validate && !signupData?.pharmacyName && (<span className="err-msg">Please enter pharmacy name.</span>)}
-                         </>
-                    )
-               }
+
+               <>
+                    <div className="mt-5 w-[100%] lg:max-w-[600px]">
+                         <CInput
+                              title="Pharmacy Name"
+                              value={signupData.pharmacyName}
+                              placeholder="Enter your Pharmacy Name"
+                              onChange={(e: any) => {
+                                   setSignupData({
+                                        ...signupData,
+                                        pharmacyName: e.target.value
+                                   })
+                              }}
+                         />
+                    </div>
+                    {signupData?.validate && !signupData?.pharmacyName && (<span className="err-msg">Please enter pharmacy name.</span>)}
+               </>
+
 
                <div className="mt-5 w-[100%] lg:max-w-[600px]">
                     <CInput
@@ -183,56 +151,52 @@ const SignUp: React.FC<Props> = ({ setAuthType }) => {
                {signupData?.validate && !signupData?.mobileNo && (<span className="err-msg">Please enter mobile number.</span>)}
 
 
-               {
-                    signupData?.role === 'PHARMACY' && (
-                         <>
-                              <div className="mt-5 w-[100%] lg:max-w-[600px]">
-                                   <CInput
-                                        title="City"
-                                        value={signupData.city}
-                                        placeholder="Enter City"
-                                        onChange={(e: any) => {
-                                             setSignupData({
-                                                  ...signupData,
-                                                  city: e.target.value
-                                             })
-                                        }}
-                                   />
-                              </div>
-                              {signupData?.validate && !signupData?.city && (<span className="err-msg">Please enter city.</span>)}
+               <>
+                    <div className="mt-5 w-[100%] lg:max-w-[600px]">
+                         <CInput
+                              title="City"
+                              value={signupData.city}
+                              placeholder="Enter City"
+                              onChange={(e: any) => {
+                                   setSignupData({
+                                        ...signupData,
+                                        city: e.target.value
+                                   })
+                              }}
+                         />
+                    </div>
+                    {signupData?.validate && !signupData?.city && (<span className="err-msg">Please enter city.</span>)}
 
-                              <div className="mt-5 w-[100%] lg:max-w-[600px]">
-                                   <CInput
-                                        title="Pincode"
-                                        value={signupData.pincode}
-                                        placeholder="Enter Pincode"
-                                        onChange={(e: any) => {
-                                             setSignupData({
-                                                  ...signupData,
-                                                  pincode: e.target.value
-                                             })
-                                        }}
-                                   />
-                              </div>
-                              {signupData?.validate && !signupData?.pincode && (<span className="err-msg">Please enter pincode.</span>)}
+                    <div className="mt-5 w-[100%] lg:max-w-[600px]">
+                         <CInput
+                              title="Pincode"
+                              value={signupData.pincode}
+                              placeholder="Enter Pincode"
+                              onChange={(e: any) => {
+                                   setSignupData({
+                                        ...signupData,
+                                        pincode: e.target.value
+                                   })
+                              }}
+                         />
+                    </div>
+                    {signupData?.validate && !signupData?.pincode && (<span className="err-msg">Please enter pincode.</span>)}
 
-                              <div className="mt-5 w-[100%] lg:max-w-[600px]">
-                                   <CInput
-                                        title="Address line 1"
-                                        value={signupData.addressLine1}
-                                        placeholder="Enter local address"
-                                        onChange={(e: any) => {
-                                             setSignupData({
-                                                  ...signupData,
-                                                  addressLine1: e.target.value
-                                             })
-                                        }}
-                                   />
-                              </div>
-                              {signupData?.validate && !signupData?.pincode && (<span className="err-msg">Please enter local addres with landmark.</span>)}
-                         </>
-                    )
-               }
+                    <div className="mt-5 w-[100%] lg:max-w-[600px]">
+                         <CInput
+                              title="Address line 1"
+                              value={signupData.addressLine1}
+                              placeholder="Enter local address"
+                              onChange={(e: any) => {
+                                   setSignupData({
+                                        ...signupData,
+                                        addressLine1: e.target.value
+                                   })
+                              }}
+                         />
+                    </div>
+                    {signupData?.validate && !signupData?.pincode && (<span className="err-msg">Please enter local addres with landmark.</span>)}
+               </>
 
                <div className="mt-5 w-[100%] lg:max-w-[600px]">
                     <CInput

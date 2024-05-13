@@ -3,11 +3,13 @@ import LandingPage from "../components/landingPage";
 import paths from "./rootRoutes";
 import PharmacyMainPage from "../components/pharmacy";
 import { useAppSelector } from "../redux/store";
+import AuthLanding from "../components/auth/authLanding";
 const RootRoutes = () => {
      return (
           <>
                <Routes>
                     <Route path="/" element={<LandingPage />} />
+                    <Route path={paths.AUTH} element={<AuthLanding />} />
                     <Route element={<PrivateRoute rootRole={'PHARMACY'} />}>
                          <Route path={paths.PHARMACY} element={<PharmacyMainPage />} />
                     </Route>
@@ -23,7 +25,7 @@ export const PrivateRoute: React.FC<{ rootRole: string }> = ({ rootRole }) => {
      const user = useAppSelector((state) => state.user);
      return (
           <div>{
-               user?.role === rootRole && user?.token ? <Outlet /> : <Navigate to={'/'} />
+               rootRole && (user?.role === rootRole) && user?.token ? <Outlet /> : <Navigate to={'/'} />
           }</div>
      )
 }

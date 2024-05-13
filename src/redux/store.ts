@@ -4,12 +4,13 @@ import type { TypedUseSelectorHook } from 'react-redux'
 import messageReducer from "./slices/messageSlice/messageSlice";
 import userReducer from "./slices/authSlice/authSlice";
 import pharmacyReducer from "./slices/pharmacySlice/pharmacySlice";
-
+import productReducer from "./slices/productSlice/productSlice";
 export const store = configureStore({
      reducer: {
           message:messageReducer,
           user:userReducer,
-          pharmacy:pharmacyReducer
+          pharmacy:pharmacyReducer,
+          product:productReducer
      }
 })
 

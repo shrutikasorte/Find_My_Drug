@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom"
+import {useNavigate } from "react-router-dom"
 import Apis from "./api"
 import NavBar from "./common/NavBar"
 import constants from "./common/constants"
@@ -9,11 +9,11 @@ import RootRoutes from "./routes"
 import { useEffect } from "react"
 import { setJwtToken } from "./api/apiServices"
 import { handleError } from "./utils"
+import paths from "./routes/rootRoutes"
 
 function App() {
   const dispatch = useAppDispatch();
-  const naviagte = useNavigate();
-  const location = useLocation();
+  const navigate = useNavigate();
   const fetchUser = async () => {
     try {
       const token = await localStorage.getItem(constants.TOKEN) || await sessionStorage.getItem(constants.TOKEN);
@@ -21,9 +21,9 @@ function App() {
         setJwtToken(token);
         const data = await Apis.fetchUser();
         dispatch(userDetails(data?.data?.data));
-        naviagte(location.pathname);
+        navigate(paths.PHARMACY, { replace: true })
       } else {
-        naviagte('/');
+        navigate('/');
       }
     } catch (error: any) {
       handleError(error?.response?.status, error?.response?.data?.message, dispatch);

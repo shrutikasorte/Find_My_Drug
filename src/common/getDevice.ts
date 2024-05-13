@@ -1,14 +1,10 @@
 import { useEffect, useState } from "react"
 
 const useGetDevice = () => {
-     const [view, setView] = useState<String>('mobile');
+     const [width, setWidth] = useState(window.innerWidth);
      useEffect(() => {
           const handleResize = () => {
-               if (window.innerWidth > 500) {
-                    setView(() => 'desktop')
-               } else {
-                    setView(() => 'mobile')
-               }
+               setWidth(window.innerWidth)
           }
 
           window.addEventListener('resize', handleResize);
@@ -16,9 +12,9 @@ const useGetDevice = () => {
           return () => {
                window.removeEventListener('resize', handleResize);
           };
-     }, []);
+     }, [window.innerWidth]);
 
-     return view;
+     return width>700 ? "desktop" : "mobile";
 }
 
 export default useGetDevice;

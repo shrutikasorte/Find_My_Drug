@@ -1,5 +1,6 @@
 const paths = {
-     'PHARMACY':'pharmacy'
+     PHARMACY:'/pharmacy',
+     AUTH:'/auth',
 }
 
 export default paths;

@@ -4,7 +4,6 @@ export interface loginState {
      rememberMe: boolean;
      loading: boolean;
      validate: boolean;
-     role: string;
 }
 
 export interface registerState {
@@ -13,7 +12,6 @@ export interface registerState {
      email?: string,
      password?: string,
      mobileNo?: number | string;
-     role?: string,
      country?: string,
      state?: string,
      city?: string,
@@ -53,6 +51,12 @@ export interface newDrugState{
 }
 
 export interface pharmacyState{
+     items:any;
+     itemCount:number;
+     loading:boolean;
+}
+
+export interface ProductState{
      items:any;
      itemCount:number;
      loading:boolean;

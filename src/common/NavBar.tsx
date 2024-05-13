@@ -11,8 +11,15 @@ import { authState } from '../redux/types';
 import { removeUserDetails } from '../redux/slices/authSlice/authSlice';
 import constants from './constants';
 import { showMessage } from '../redux/slices/messageSlice/messageSlice';
+import useGetDevice from './getDevice';
+import { TiThMenu } from 'react-icons/ti';
+import { useNavigate } from 'react-router-dom';
+import paths from '../routes/rootRoutes';
 const NavBar = () => {
      const [openPopUp, setOpenPopUp] = useState(false);
+     const [openAuthPopUp, setOpenAuthPopUp] = useState(false);
+     const navigate = useNavigate();
+     const device = useGetDevice();
      const [userData, setUserData] = useState<authState>({
           name: '',
           pharmacyName: '',
@@ -27,6 +34,7 @@ const NavBar = () => {
           id: '',
           token: ''
      });
+
      const user = useAppSelector((state) => state.user);
      const dispatch = useAppDispatch();
 
@@ -54,6 +62,7 @@ const NavBar = () => {
           sessionStorage.removeItem(constants.USER);
           dispatch(removeUserDetails());
           dispatch(showMessage({ error: false, msg: 'User logged out sucessfully', show: true }));
+          window.location.replace('/');
      }
 
      useEffect(() => {
@@ -87,6 +96,25 @@ const NavBar = () => {
                </div>
           </div>
      )
+
+     const authContent = (
+          <div className='min-w-[200px]'>
+               <div className='flex flex-col gap-2 font-[Roboto] pr-5'>
+                    <div className='text-white bg-green-800 rounded-3xl text-center font-bold py-[5px] w-[150px] cursor-pointer'
+                         onClick={() => {
+                              setOpenAuthPopUp(false);
+                              navigate(paths.AUTH, { state: { name: 'login' } });
+                         }}
+                    >Login</div>
+                    <div className='text-white bg-green-800 rounded-3xl text-center font-bold py-[5px] w-[150px] cursor-pointer'
+                         onClick={() => {
+                              setOpenAuthPopUp(false);
+                              navigate(paths.AUTH, { state: { name: 'signup' } })
+                         }}
+                    >Register</div>
+               </div>
+          </div>
+     )
      return (
           <div className="fixed w-[100%] top-0 flex justify-between bg-green-950 h-[60px] px-4 items-center z-50">
                <div className="flex items-center gap-2">
@@ -96,7 +124,7 @@ const NavBar = () => {
 
 
                {
-                    userData?.token && (
+                    userData?.token ? (
                          <div className="flex gap-4 items-center pr-1">
                               <Popover
                                    defaultOpen={false}
@@ -108,8 +136,36 @@ const NavBar = () => {
                                    <RiAccountCircleFill color="white" size={30} />
                               </Popover>
                          </div>
-                    )
+                    ) :
+                         (
+                              <>
+                                   {
+                                        device === "mobile" ?
+                                             <div>
+                                                  <Popover
+                                                       defaultOpen={false}
+                                                       content={authContent}
+                                                       trigger="click"
+                                                       open={openAuthPopUp}
+                                                       onOpenChange={() => setOpenAuthPopUp(!openAuthPopUp)}
+                                                  >
+                                                       <TiThMenu color='white' size={20} />
+                                                  </Popover>
+                                             </div>
+                                             :
+                                             <div className='flex gap-2 font-[Roboto] pr-5'>
+                                                  <div className='text-green-800 bg-white rounded-3xl text-center font-bold py-[5px] w-[100px] cursor-pointer'
+                                                       onClick={() => navigate(paths.AUTH, { state: { name: 'login' } })}
+                                                  >Login</div>
+                                                  <div className='text-green-800 bg-white rounded-3xl text-center font-bold py-[5px] w-[100px] cursor-pointer'
+                                                       onClick={() => navigate(paths.AUTH, { state: { name: 'signup' } })}
+                                                  >Register</div>
+                                             </div>
+                                   }
+                              </>
+                         )
                }
+
 
           </div>
      )

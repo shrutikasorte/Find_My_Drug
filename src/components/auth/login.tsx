@@ -16,18 +16,16 @@ const Login: React.FC = () => {
      const [loginData, setLoginData] = useState<loginState>({
           email: "",
           password: "",
-          rememberMe: false,
+          rememberMe: true,
           loading: false,
           validate: false,
-          role: ""
      })
      const dispatch = useAppDispatch();
      const navigate = useNavigate();
      const handleSubmit = async () => {
           setLoginData({ ...loginData, validate: true });
           if (!loginData.email || loginData.email.trim() === "" ||
-               !loginData.password || loginData.password.trim() === "" ||
-               !loginData.role || loginData.role.trim() === ""
+               !loginData.password || loginData.password.trim() === "" 
           ) {
                return;
           }
@@ -36,7 +34,6 @@ const Login: React.FC = () => {
           const payload = {
                email: loginData?.email,
                password: loginData?.password,
-               role: loginData?.role
           }
           try {
                const result = await Apis.loginApi(payload)
@@ -56,7 +53,6 @@ const Login: React.FC = () => {
 
                     if (res?.data?.role === constants.PHARMACY) {
                          navigate(paths.PHARMACY, { replace: true })
-                        //document.location.replace(paths.PHARMACY);
                     }
                }
           } catch (error: any) {
@@ -73,34 +69,6 @@ const Login: React.FC = () => {
                <div className="mt-7">
                     <img width={100} src={Images.logo} alt="" />
                </div>
-               <div className="mt-8 flex gap-5  px-7">
-                    <div className="flex gap-2 items-center text-white font-Ultra text-[14px]">
-                         <input
-                              className="custom-radio"
-                              type="radio"
-                              id="role"
-                              name="role"
-                              value="CUSTOMER"
-                              defaultChecked={loginData?.role === 'CUSTOMER' ? true : false}
-                              onClick={() => setLoginData({ ...loginData, role: 'CUSTOMER' })}
-                         />
-                         <div>Customer</div>
-                    </div>
-                    <div className="flex gap-2 items-center text-white font-Ultra text-[14px]">
-                         <input
-                              className="custom-radio"
-                              type="radio"
-                              id="role"
-                              name="role"
-                              value="PHARMACY"
-                              defaultChecked={loginData?.role === 'PHARMACY' ? true : false}
-                              onClick={() => setLoginData({ ...loginData, role: 'PHARMACY' })}
-                         />
-                         <div>Pharmacy</div>
-                    </div>
-               </div>
-               {loginData?.validate && !loginData?.role && (<span className="err-msg">Select either of the options.</span>)}
-
                <div className="mt-5 w-[100%]  lg:max-w-[600px]">
                     <CInput
                          title="Email"

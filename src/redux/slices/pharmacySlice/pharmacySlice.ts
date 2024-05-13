@@ -13,7 +13,6 @@ const initialState: pharmacyState = {
 export const fetchPharmacyItems = createAsyncThunk("pharmacy/items", async (_, { dispatch }) => {
      try {
           const response = await Apis.fetchItems();
-          console.log(response);
           return {data:response.data.data,count:response.data.count};
      } catch (error: any) {
           handleError(error?.response?.status, error?.response?.data?.message, dispatch);

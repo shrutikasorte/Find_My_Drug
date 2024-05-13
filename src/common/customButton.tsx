@@ -9,8 +9,9 @@ type Props = {
      loading?: boolean;
      disabled?:boolean;
      titleStyle?:string;
+     icon?:any;
 }
-const CButton: React.FC<Props> = ({ className, title, onClick, loading=false,disabled,titleStyle }) => {
+const CButton: React.FC<Props> = ({ className, title, onClick, loading=false,disabled,titleStyle ,icon}) => {
      return (
           <button
                onClick={onClick}
@@ -19,7 +20,8 @@ const CButton: React.FC<Props> = ({ className, title, onClick, loading=false,dis
           >
                <div className='flex items-center justify-center gap-2'>
                     {loading && (<Spin indicator={<LoadingOutlined style={{ fontSize: 24, color: 'black' }} spin />} />)}
-                    <div className={titleStyle}>{title}</div>
+                    {title && <div className={titleStyle}>{title}</div>}
+                    {!title && icon && <div>{icon}</div>}
                </div>
           </button>
      )
